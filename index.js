@@ -24,6 +24,7 @@ if (window) {
         client.currentEvent = { id: e.data.payload.applicationId }
       } else if (e.data.type === 'cms_root') {
         cmsRoot = e.data.payload.url
+        client.region = getRegion(cmsRoot)
       }
     }
     if (accessToken && client.currentEvent && cmsRoot) {
@@ -38,4 +39,17 @@ if (window && window.parent && window.parent.postMessage) {
     type: 'loaded',
     payload: { src: document.location.toString() }
   }, '*')
+}
+
+function getRegion(cmsRoot) {
+  return cmsRoot.indexOf("https://cms.doubledutch.me") === 0
+  ? "us"
+  : cmsRoot.indexOf("https://cms.eu.doubledutch.me") === 0
+      ? "eu"
+      : cmsRoot.indexOf("https://purple.cms.doubledutch.me") === 0
+          ? "purple"
+          : cmsRoot.indexOf("https://qa.cms.doubledutch.me") === 0
+              ? "qa"
+              : "none";
+
 }
