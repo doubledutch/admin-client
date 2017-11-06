@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/doubledutch/admin-client"
+    "url": "git://github.com/doubledutch/admin-client.git"
   },
   "author": "DoubleDutch",
   "contributors": [
