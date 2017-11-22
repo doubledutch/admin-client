@@ -1,3 +1,6 @@
+const win = (global && global._window) || window
+const xmlHttpRequest = (global && global._xmlHttpRequest) || XMLHttpRequest
+
 let accessToken, cmsRoot
 let accessTokenResolves = []
 let cmsRequests = []
@@ -16,8 +19,8 @@ const client = {
 }
 export default client
 
-if (window) {
-  window.addEventListener('message', e => {
+if (win) {
+  win.addEventListener('message', e => {
     if (e.data) {
       if (e.data.type === 'access_token') {
         accessToken = e.data.payload.accessToken
@@ -34,14 +37,14 @@ if (window) {
       cmsRequests.forEach(r => r())
       cmsRequests = []
     }
-  }, false)  
+  }, false)
 }
 
 function postMessage(type) {
-  if (window && window.parent && window.parent.postMessage) {
-    window.parent.postMessage({
+  if (win && win.parent && win.parent.postMessage) {
+    win.parent.postMessage({
       type,
-      payload: { src: document.location.toString() }
+      payload: { src: win.document.location.toString() }
     }, '*')
   }
 }
@@ -68,16 +71,17 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
       cmsRequests.push(doRequest)
     }
 
+    // A simple usage of XMLHttpRequest provides browser compatibility and small footprint.
     function doRequest() {
       const url = `${cmsRoot}${relativeUrl}${relativeUrl.indexOf('?') >= 0 ? '&':'?'}currentApplicationId=${client.currentEvent.id}`
-      const request = new XMLHttpRequest()
+      const request = new xmlHttpRequest()
       request.open(method, url, true)
       request.setRequestHeader('Authorization', `Bearer ${accessToken}`)
       request.onload = function() {
         if (this.status == 401) {
           accessToken = null
-          postMessage('access_token_unauthorized')
           cmsRequests.push(doRequest)
+          postMessage('access_token_unauthorized')
           return
         }
         if (this.status >= 200 && this.status < 400) {
@@ -101,7 +105,7 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
         request.send(body)
       } else {
         request.send()
-      }        
+      }
     }
   })
 }
