@@ -1,7 +1,8 @@
 let accessToken, cmsRoot
 let accessTokenResolves = []
-
+let cmsRequests = []
 const client = {
+  cmsRequest,
   getToken() {
     return new Promise((resolve, reject) => {
       if (accessToken) {
@@ -30,16 +31,21 @@ if (window) {
     if (accessToken && client.currentEvent && cmsRoot) {
       accessTokenResolves.forEach(resolve => resolve(accessToken))
       accessTokenResolves = []
+      cmsRequests.forEach(r => r())
+      cmsRequests = []
     }
   }, false)  
 }
 
-if (window && window.parent && window.parent.postMessage) {
-  window.parent.postMessage({
-    type: 'loaded',
-    payload: { src: document.location.toString() }
-  }, '*')
+function postMessage(type) {
+  if (window && window.parent && window.parent.postMessage) {
+    window.parent.postMessage({
+      type,
+      payload: { src: document.location.toString() }
+    }, '*')
+  }
 }
+postMessage('loaded')
 
 function getRegion(cmsRoot) {
   return cmsRoot.indexOf("https://cms.doubledutch.me") === 0
@@ -52,4 +58,50 @@ function getRegion(cmsRoot) {
               ? "qa"
               : "none";
 
+}
+
+function cmsRequest(method, relativeUrl, bodyJSON) {
+  return new Promise((resolve, reject) => {
+    if (accessToken && client.currentEvent && cmsRoot) {
+      doRequest()
+    } else {
+      cmsRequests.push(doRequest)
+    }
+
+    function doRequest() {
+      const url = `${cmsRoot}${relativeUrl}${relativeUrl.indexOf('?') >= 0 ? '&':'?'}currentApplicationId=${client.currentEvent.id}`
+      const request = new XMLHttpRequest()
+      request.open(method, url, true)
+      request.setRequestHeader('Authorization', `Bearer ${accessToken}`)
+      request.onload = function() {
+        if (this.status == 401) {
+          accessToken = null
+          postMessage('access_token_unauthorized')
+          cmsRequests.push(doRequest)
+          return
+        }
+        if (this.status >= 200 && this.status < 400) {
+          if (!this.response) resolve()
+          let data
+          try {
+            data = JSON.parse(this.response)
+          } catch (e) {
+            throw new Error(`Could not parse JSON: ${this.response}`)
+          }
+          resolve(data)
+        }
+      }
+      request.onerror = function() {
+        throw new Error('connection error')
+      }
+      if (bodyJSON) {
+        const body = JSON.stringify(bodyJSON)
+        request.setRequestHeader('Content-Type', 'application/json')
+        request.setRequestHeader('Content-Length', body.length)
+        request.send(body)
+      } else {
+        request.send()
+      }        
+    }
+  })
 }
