@@ -3,6 +3,7 @@ import client from '../src/index'
 
 beforeEach(() => {
   global._xmlHttpRequestSpy = {}
+  global._window.parent.postMessage({type: 'loaded'}, '*')
 })
 
 test('client can getToken()', async () => {
@@ -36,4 +37,14 @@ test('token is refreshed when CMS API returns 401, and CMS API call is retried',
   expect(global._xmlHttpRequestSpy.statuses).toHaveLength(0)
   expect(global._xmlHttpRequestSpy.authorizations).toHaveLength(0)
   expect(global._xmlHttpRequestSpy.responseBodies).toHaveLength(0)
+})
+
+test('client can getUsers()', async () => {
+  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/users?currentApplicationId=EVENT_ID'}]
+  global._xmlHttpRequestSpy.responseBodies = [[{ Id: '1234', FirstName: 'Adam', LastName: 'Liechty', EmailAddress: 'adam@doubledutch.me' }]]
+
+  const responseBody = await client.getUsers()
+  expect(responseBody).toEqual([{id: '1234', email: 'adam@doubledutch.me', firstName: 'Adam', lastName: 'Liechty', userGroupIds: []}])
+
+  expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
 })

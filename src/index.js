@@ -1,3 +1,5 @@
+import api from './api'
+
 const win = (global && global._window) || window
 const xmlHttpRequest = (global && global._xmlHttpRequest) || XMLHttpRequest
 
@@ -17,6 +19,8 @@ const client = {
   },
   currentUser: { id: 'none' }
 }
+const apiFunctions = api(client)
+Object.keys(apiFunctions).forEach(fnName => client[fnName] = apiFunctions[fnName])
 export default client
 
 if (win) {
@@ -60,7 +64,6 @@ function getRegion(cmsRoot) {
           : cmsRoot.indexOf("https://qa.cms.doubledutch.me") === 0
               ? "qa"
               : "none";
-
 }
 
 function cmsRequest(method, relativeUrl, bodyJSON) {
