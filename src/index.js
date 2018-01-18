@@ -76,6 +76,12 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
 
     // A simple usage of XMLHttpRequest provides browser compatibility and small footprint.
     function doRequest() {
+      if (client.region === 'none') {
+        console.log(`Skipping HTTP request to actual CMS. ${method} ${relativeURL}`)
+        resolve()
+        return
+      }
+      
       const url = `${cmsRoot}${relativeUrl}${relativeUrl.indexOf('?') >= 0 ? '&':'?'}currentApplicationId=${client.currentEvent.id}`
       const request = new xmlHttpRequest()
       request.open(method, url, true)
