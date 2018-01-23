@@ -110,7 +110,6 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
       if (bodyJSON) {
         const body = JSON.stringify(bodyJSON)
         request.setRequestHeader('Content-Type', 'application/json')
-        request.setRequestHeader('Content-Length', body.length)
         request.send(body)
       } else {
         request.send()
