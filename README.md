@@ -57,12 +57,39 @@ indirectly by other client libraries to access the DoubleDutch platform.
 client.getToken().then(token => /* Use the token. */)
 ```
 
-## `client.getUsers()`
+## `client.getAttendee(id)`
 
-Returns a Promise which resolves to all the attendees in the current event.
+Returns a Promise which resolves to the attendee in the current event.
 
 ```javascript
-client.getUsers().then(users => console.log(users))
+client.getAttendee(42).then(attendee => console.log(attendee))
+```
+
+## `client.getAttendees(query)`
+
+Returns a Promise which resolves to all the attendees in the current event, or
+the top 200 filtered by a query string.
+
+```javascript
+client.getAttendees().then(attendees => console.log(attendees))
+client.getAttendees('John').then(attendees => console.log(attendees))
+```
+
+## `client.getAttendeeGroups()`
+
+Returns a Promise which resolves to all the attendee groups in the current event
+
+```javascript
+client.getAttendeeGroups().then(groups => console.log(groups))
+```
+
+## `client.getTiers()`
+
+Returns a Promise which resolves to all the attendee groups in the current event,
+for events with Content Visibility enabled.
+
+```javascript
+client.getTiers().then(tiers => console.log(tiers))
 ```
 
 ## `client.cmsRequest(method, relativeURL, bodyJSON)`

@@ -18,6 +18,14 @@ export function prettifyAttendee(user) {
   })
 }
 
+export function prettifyAttendeeGroup(group) {
+  if (!group) return null
+  return {
+    id: group.Id,
+    name: group.Name
+  }
+}
+
 export function prettifyTier(tier) {
   if (!tier) return null
   return {

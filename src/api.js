@@ -1,39 +1,68 @@
-import { prettifyAttendee, prettifyTier } from './transforms'
+import { prettifyAttendee, prettifyAttendeeGroup, prettifyTier } from './transforms'
 
 export default function api(client) {
   function isEmulated() { return client.region === 'none' }
 
-  return {
+  const apis = {
+    getAttendee(id) {
+      return isEmulated() ? emulatedApi.getAttendee(id)
+        : client.cmsRequest('GET', `/api/users/${id}`).then(prettifyAttendee)
+    },
+    getAttendees(query) {
+      return isEmulated()
+        ? emulatedApi.getAttendees(query)
+        : client.cmsRequest('GET', `/api/users${query ? '?$top=200&q=' + encodeURIComponent(query) : ''}`)
+          .then(val => val.map(prettifyAttendee))
+    },
+    getAttendeeGroups() {
+      return isEmulated() ? emulatedApi.getAttendeeGroups()
+        : client.cmsRequest('GET', '/api/usergroups').then(val => val.map(prettifyAttendeeGroup))
+    },
     getTiers() {
       return isEmulated() ? emulatedApi.getTiers()
         : client.cmsRequest('GET', '/api/tiers').then(val => val.map(prettifyTier))
     },
-    getUser(userId) {
-      return isEmulated() ? emulatedApi.getUser(userId)
-        : client.cmsRequest('GET', `/api/users/${userId}`).then(prettifyAttendee)
-    },
-    getUsers() {
-      return isEmulated() ? emulatedApi.getUsers()
-        : client.cmsRequest('GET', '/api/users').then(val => val.map(prettifyAttendee))
-    }
+
+    // Deprecated aliases for getAttendee(s)
+    getUser: id => apis.getAttendee(id),
+    getUsers: () => apis.getAttendees()
   }
+
+  return apis
 }
 
 export const emulatedApi = {
+  getAttendeeGroups() {
+    return Promise.resolve(emulatedAttendeeGroups.map(prettifyAttendeeGroup))
+  },
   getTiers() {
     return Promise.resolve(emulatedTiers.map(prettifyTier))
   },
-  getUser(userId) {
-    userId = userId == null ? null : userId.toString()
-    if (emulatedUsers[userId]) return Promise.resolve(emulatedUsers[userId]).then(prettifyAttendee)
+  getAttendee(id) {
+    id = id == null ? null : id.toString()
+    if (emulatedAttendees[id]) return Promise.resolve(emulatedAttendees[id]).then(prettifyAttendee)
     return Promise.reject('Not Found')
   },
-  getUsers() {
-    return Promise.resolve(Object.keys(emulatedUsers).map(id => prettifyAttendee(emulatedUsers[id])))
+  getAttendees(query) {
+    // Crude filter for emulator
+    const attendees = Object.keys(emulatedAttendees).map(id => prettifyAttendee(emulatedAttendees[id]))
+    return Promise.resolve(query
+      ? attendees.filter(a => !!Object.values(a).find(v => v && v.length && v.toLowerCase().includes(query.toLowerCase())))
+      : attendees)
   }
 }
 
-const emulatedUsers = {
+const emulatedAttendeeGroups = [
+  { Id: 68, Name: 'Engineering' },
+  { Id: 79, Name: 'Marketing' }
+]
+
+const emulatedTiers = [
+  { Id: 0, Name: 'Default', AttendeeCount: 42, ListItems: [{ItemCount: 400, TopicName: 'Agenda', TopicId: 456}] },
+  { Id: 123, Name: 'VIP', AttendeeCount: 5, ListItems: [{ItemCount: 3, TopicName: 'Agenda', TopicId: 456}]}
+]
+
+const emulatedAttendees = {
   '24601': {
     Id: '24601',
     ImageUrl: 'https://images.amcnetworks.com/bbcamerica.com/wp-content/blogs.dir/55/files/2012/12/Hugh-Jackman-Les-Miserables.jpg',

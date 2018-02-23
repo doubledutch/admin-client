@@ -49,6 +49,35 @@ test('client can getUsers()', async () => {
   expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
 })
 
+test('client can getAttendees()', async () => {
+  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/users?currentApplicationId=EVENT_ID'}]
+  global._xmlHttpRequestSpy.responseBodies = [[{ Id: '1234', FirstName: 'Adam', LastName: 'Liechty', EmailAddress: 'adam@doubledutch.me' }]]
+
+  const responseBody = await client.getAttendees()
+  expect(responseBody).toEqual([{id: '1234', email: 'adam@doubledutch.me', firstName: 'Adam', lastName: 'Liechty', userGroupIds: []}])
+
+  expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
+})
+
+test('client can getAttendees(query)', async () => {
+  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/users?$top=200&q=MY_QUERY&currentApplicationId=EVENT_ID'}]
+  global._xmlHttpRequestSpy.responseBodies = [[{ Id: '1234', FirstName: 'Adam', LastName: 'Liechty', EmailAddress: 'adam@doubledutch.me' }]]
+
+  const responseBody = await client.getAttendees('MY_QUERY')
+  expect(responseBody).toEqual([{id: '1234', email: 'adam@doubledutch.me', firstName: 'Adam', lastName: 'Liechty', userGroupIds: []}])
+
+  expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
+})
+
+test('emulated client can getAttendees(query)', async () => {
+  client.region = 'none'
+  const responseBody = await client.getAttendees('pont')
+  expect(responseBody).toEqual([
+    {id: '1234', email: 'cosette@thenardier.hotel', username: 'cosette@thenardier.hotel', company: 'Les Misérables', title: 'Character', firstName: 'Cosette', lastName: 'Pontmercy', image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Ebcosette.jpg', userGroupIds: []},
+    {id: '5678', email: 'marius@revolution.fr', username: 'marius@revolution.fr', company: 'Les Misérables', title: 'Character', firstName: 'Marius', lastName: 'Pontmercy', image: 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Marius_sees_Cosette.jpg', userGroupIds: []}
+  ])
+})
+
 test('client can getTiers()', async () => {
   global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/tiers?currentApplicationId=EVENT_ID'}]
   global._xmlHttpRequestSpy.responseBodies = [[
@@ -60,6 +89,19 @@ test('client can getTiers()', async () => {
   expect(responseBody).toEqual([
     {id: 0, name: 'Default', attendeeCount: 42, lists: [{id: 456, name: 'Agenda', itemCount: 400}]},
     {id: 123, name: 'VIP', attendeeCount: 5, lists: [{id: 456, name: 'Agenda', itemCount: 3}]}
+  ])
+
+  expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
+})
+
+test('client can getAttendeeGroups()', async () => {
+  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/usergroups?currentApplicationId=EVENT_ID'}]
+  global._xmlHttpRequestSpy.responseBodies = [[{ Id: 68, Name: 'Engineering' }, { Id: 79, Name: 'Marketing' }]]
+
+  const responseBody = await client.getAttendeeGroups()
+  expect(responseBody).toEqual([
+    {id: 68, name: 'Engineering'},
+    {id: 79, name: 'Marketing'}
   ])
 
   expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
