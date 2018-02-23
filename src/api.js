@@ -1,9 +1,13 @@
-import { prettifyAttendee } from './transforms'
+import { prettifyAttendee, prettifyTier } from './transforms'
 
 export default function api(client) {
   function isEmulated() { return client.region === 'none' }
 
   return {
+    getTiers() {
+      return isEmulated() ? emulatedApi.getTiers()
+        : client.cmsRequest('GET', '/api/tiers').then(val => val.map(prettifyTier))
+    },
     getUser(userId) {
       return isEmulated() ? emulatedApi.getUser(userId)
         : client.cmsRequest('GET', `/api/users/${userId}`).then(prettifyAttendee)
@@ -16,6 +20,9 @@ export default function api(client) {
 }
 
 export const emulatedApi = {
+  getTiers() {
+    return Promise.resolve(emulatedTiers.map(prettifyTier))
+  },
   getUser(userId) {
     userId = userId == null ? null : userId.toString()
     if (emulatedUsers[userId]) return Promise.resolve(emulatedUsers[userId]).then(prettifyAttendee)

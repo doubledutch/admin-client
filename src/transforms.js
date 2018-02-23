@@ -18,6 +18,16 @@ export function prettifyAttendee(user) {
   })
 }
 
+export function prettifyTier(tier) {
+  if (!tier) return null
+  return {
+    id: tier.Id,
+    name: tier.Name,
+    attendeeCount: tier.AttendeeCount,
+    lists: tier.ListItems.map(x => ({itemCount: x.ItemCount, name: x.TopicName, id: x.TopicId}))
+  }
+}
+
 function deleteUndefinedKeys(obj) {
   Object.keys(obj).forEach(key => typeof obj[key] === 'undefined' && delete obj[key])
   return obj

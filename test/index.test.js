@@ -48,3 +48,19 @@ test('client can getUsers()', async () => {
 
   expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
 })
+
+test('client can getTiers()', async () => {
+  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/tiers?currentApplicationId=EVENT_ID'}]
+  global._xmlHttpRequestSpy.responseBodies = [[
+    { Id: 0, Name: 'Default', AttendeeCount: 42, ListItems: [{ItemCount: 400, TopicName: 'Agenda', TopicId: 456}] },
+    { Id: 123, Name: 'VIP', AttendeeCount: 5, ListItems: [{ItemCount: 3, TopicName: 'Agenda', TopicId: 456}]}
+  ]]
+
+  const responseBody = await client.getTiers()
+  expect(responseBody).toEqual([
+    {id: 0, name: 'Default', attendeeCount: 42, lists: [{id: 456, name: 'Agenda', itemCount: 400}]},
+    {id: 123, name: 'VIP', attendeeCount: 5, lists: [{id: 456, name: 'Agenda', itemCount: 3}]}
+  ])
+
+  expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
+})
