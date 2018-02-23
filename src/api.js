@@ -71,6 +71,7 @@ const emulatedAttendees = {
     UniqueIdentifier: 'jvj24601',
     FirstName: 'Jean',
     LastName: 'Valjean',
+    Tier: 123,
     Title: 'Character',
     Company: 'Les Misérables'
   },
