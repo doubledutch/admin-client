@@ -9,9 +9,12 @@ export default function api(client) {
         : client.cmsRequest('GET', `/api/users/${id}`).then(prettifyAttendee)
     },
     getAttendees(query) {
+      const url = query == null
+        ? '/api/users'
+        : `/api/users?q=${query}&top=200&skip=0`
       return isEmulated()
         ? emulatedApi.getAttendees(query)
-        : client.cmsRequest('GET', `/api/users${query ? '?$top=200&q=' + encodeURIComponent(query) : ''}`)
+        : client.cmsRequest('GET', url)
           .then(val => val.map(prettifyAttendee))
     },
     getAttendeeGroups() {
