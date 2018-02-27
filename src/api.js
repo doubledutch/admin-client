@@ -75,6 +75,7 @@ const emulatedAttendees = {
     FirstName: 'Jean',
     LastName: 'Valjean',
     Tier: 123,
+    UserGroups: [68],
     Title: 'Character',
     Company: 'Les Misérables'
   },
@@ -86,6 +87,7 @@ const emulatedAttendees = {
     UniqueIdentifier: 'cosette1862',
     FirstName: 'Cosette',
     LastName: 'Pontmercy',
+    UserGroups: [68,79],
     Title: 'Character',
     Company: 'Les Misérables'
   },
