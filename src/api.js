@@ -50,7 +50,7 @@ export const emulatedApi = {
     // Crude filter for emulator
     const attendees = Object.keys(emulatedAttendees).map(id => prettifyAttendee(emulatedAttendees[id]))
     return Promise.resolve(query
-      ? attendees.filter(a => !!Object.values(a).find(v => if (typeof v === "string") return v && v.length && v.toLowerCase().includes(query.toLowerCase())))
+      ? attendees.filter(a => !!Object.values(a).find(v => if (typeof v === "string") v && v.toLowerCase().includes(query.toLowerCase())))
       : attendees)
   }
 }
