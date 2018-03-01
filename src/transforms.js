@@ -27,6 +27,17 @@ export function prettifyAttendeeGroup(group) {
   }
 }
 
+export function prettifySurvey(s) {
+  if (!s) return null
+  return deleteUndefinedKeys({
+    id: s.Id,
+    name: s.Name,
+    description: s.Description,
+    listId: s.TopicId || null,
+    itemIds: s.Items.map(x => x.value)
+  })
+}
+
 export function prettifyTier(tier) {
   if (!tier) return null
   return {

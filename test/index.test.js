@@ -78,6 +78,20 @@ test('emulated client can getAttendees(query)', async () => {
   ])
 })
 
+test('client can getSurveys()', async () => {
+  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/surveys?currentApplicationId=EVENT_ID'}]
+  global._xmlHttpRequestSpy.responseBodies = [[
+    { Name:"Event Feedback", Description:"How was your experience?", TopicId:0, Items:[], Questions:[], Id:126108 }
+  ]]
+
+  const responseBody = await client.getSurveys()
+  expect(responseBody).toEqual([
+    {id: 126108, name: 'Event Feedback', description: 'How was your experience?', listId: null, itemIds: []}
+  ])
+
+  expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
+})
+
 test('client can getTiers()', async () => {
   global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/tiers?currentApplicationId=EVENT_ID'}]
   global._xmlHttpRequestSpy.responseBodies = [[

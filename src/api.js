@@ -1,4 +1,4 @@
-import { prettifyAttendee, prettifyAttendeeGroup, prettifyTier } from './transforms'
+import { prettifyAttendee, prettifyAttendeeGroup, prettifySurvey, prettifyTier } from './transforms'
 
 export default function api(client) {
   function isEmulated() { return client.region === 'none' }
@@ -16,6 +16,10 @@ export default function api(client) {
         ? emulatedApi.getAttendees(query)
         : client.cmsRequest('GET', url)
           .then(val => val.map(prettifyAttendee))
+    },
+    getSurveys() {
+      return isEmulated() ? emulatedApi.getSurveys()
+        : client.cmsRequest('GET', '/api/surveys').then(val => val.map(prettifySurvey))
     },
     getAttendeeGroups() {
       return isEmulated() ? emulatedApi.getAttendeeGroups()
@@ -38,6 +42,9 @@ export const emulatedApi = {
   getAttendeeGroups() {
     return Promise.resolve(emulatedAttendeeGroups.map(prettifyAttendeeGroup))
   },
+  getSurveys() {
+    return Promise.resolve(emulatedSurveys.map(prettifySurvey))
+  },
   getTiers() {
     return Promise.resolve(emulatedTiers.map(prettifyTier))
   },
@@ -58,6 +65,10 @@ export const emulatedApi = {
 const emulatedAttendeeGroups = [
   { Id: 68, Name: 'Engineering' },
   { Id: 79, Name: 'Marketing' }
+]
+
+const emulatedSurveys = [
+  { Name:"Event Feedback", Description:"How was your experience?", TopicId:0, Items:[], Questions:[], Id:126108 }
 ]
 
 const emulatedTiers = [
