@@ -25,7 +25,7 @@
   "contributors": [
     "Adam Liechty <adam@doubledutch.me>"
   ],
-  "license": "ISC",
+  "license": "apache-2.0",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
