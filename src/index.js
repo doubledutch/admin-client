@@ -71,15 +71,12 @@ function postMessage(type) {
 postMessage('loaded')
 
 function getRegion(cmsRoot) {
-  return cmsRoot.indexOf("https://cms.doubledutch.me") === 0
-  ? "us"
-  : cmsRoot.indexOf("https://cms.eu.doubledutch.me") === 0
-      ? "eu"
-      : cmsRoot.indexOf("https://purple.cms.doubledutch.me") === 0
-          ? "purple"
-          : cmsRoot.indexOf("https://qa.cms.doubledutch.me") === 0
-              ? "qa"
-              : "none";
+  if (cmsRoot.indexOf("https://cms.doubledutch.me") === 0) return 'us'
+  if (cmsRoot.indexOf("https://cms.eu.doubledutch.me") === 0) return 'eu'
+  if (cmsRoot.indexOf("https://purple.cms.doubledutch.me") === 0) return 'purple'
+  if (cmsRoot.indexOf("https://qa.cms.doubledutch.me") === 0) return 'qa'
+  if (cmsRoot.indexOf("http://cms.local:") === 0 || cmsRoot.indexOf("http://localhost:") === 0) return 'local'
+  return 'none'
 }
 
 function cmsRequest(method, relativeUrl, bodyJSON) {
