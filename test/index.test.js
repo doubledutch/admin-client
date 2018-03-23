@@ -29,6 +29,12 @@ test('client can getToken()', async () => {
 
 const getConfigParams = {method: 'GET', url: 'https://cms.doubledutch.me/api/config?currentApplicationId=EVENT_ID'}
 
+test('client can navigate to relative url', async () => {
+  global._window.location = '/starting/place';
+  client.navigateCms('/some/place')
+  expect(global._window.location).toEqual('/some/place')
+})
+
 test('CMS API request resolves to response', async () => {
   global._xmlHttpRequestSpy.openParams = [getConfigParams]
   global._xmlHttpRequestSpy.responseBodies = [{ some: 'config' }]

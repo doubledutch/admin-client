@@ -100,3 +100,11 @@ CMS request for the current event.
 ```javascript
 client.cmsRequest('GET', '/api/users').then(users => console.log(users))
 ```
+
+## `client.navigateCms(relativeURL)`
+
+Instructs the CMS to navigate to a relative url.
+
+```javascript
+client.navigateCms('/api/users')
+```
