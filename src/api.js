@@ -27,7 +27,7 @@ export default function api(client) {
     getAttendees(query) {
       const url = query == null
         ? '/api/users'
-        : `/api/users?q=${query}&top=200&skip=0`
+        : `/api/users?q=${query}&page=0&top=200`
       return isEmulated()
         ? emulatedApi.getAttendees(query)
         : client.cmsRequest('GET', url)
