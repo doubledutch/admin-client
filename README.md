@@ -103,8 +103,8 @@ client.cmsRequest('GET', '/api/users').then(users => console.log(users))
 
 ## `client.navigateCms(relativeURL)`
 
-Instructs the CMS to navigate to a relative url.
+Instructs the parent CMS window to navigate to a relative URL.
 
 ```javascript
-client.navigateCms('/api/users')
+client.navigateCms('/some/other/page')
 ```
