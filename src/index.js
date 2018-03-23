@@ -24,6 +24,7 @@ let accessTokenResolves = []
 let cmsRequests = []
 const client = {
   cmsRequest,
+  navigateCms,
   getToken() {
     return new Promise((resolve, reject) => {
       if (accessToken) {
@@ -60,11 +61,11 @@ if (win) {
   }, false)
 }
 
-function postMessage(type) {
+function postMessage(type, data) {
   if (win && win.parent && win.parent.postMessage) {
     win.parent.postMessage({
       type,
-      payload: { src: win.document.location.toString() }
+      payload: { src: win.document.location.toString(), data: data }
     }, '*')
   }
 }
@@ -129,4 +130,8 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
       }
     }
   })
+}
+
+function navigateCms(relativeUrl) {
+  postMessage('navigate_cms', { destinationPath : relativeUrl });
 }

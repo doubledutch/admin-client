@@ -43,6 +43,8 @@ getPort(3001).catch(() => getPort(0)).then(port => {
           target.postMessage({type: 'access_token', payload: {accessToken:'fake-access-token'}}, '*')
           target.postMessage({type: 'application_id', payload: {applicationId:'sample-event-id'}}, '*')
           target.postMessage({type: 'cms_root', payload: {url:'http://fake.localhost'}}, '*')
+        } else if (e.data.type === 'navigate_cms') {
+          console.log(e.data)
         }
       }, false)
     </script>
