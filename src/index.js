@@ -25,6 +25,7 @@ let cmsRequests = []
 const client = {
   cmsRequest,
   navigateCms,
+  getCmsBaseUrl,
   getToken() {
     return new Promise((resolve, reject) => {
       if (accessToken) {
@@ -78,6 +79,10 @@ function getRegion(cmsRoot) {
   if (cmsRoot.indexOf("https://qa.cms.doubledutch.me") === 0) return 'qa'
   if (cmsRoot.indexOf("http://cms.local:") === 0 || cmsRoot.indexOf("http://localhost:") === 0) return 'local'
   return 'none'
+}
+
+function getCmsBaseUrl() {
+  return cmsRoot;
 }
 
 function cmsRequest(method, relativeUrl, bodyJSON) {

@@ -108,3 +108,11 @@ Instructs the parent CMS window to navigate to a relative URL.
 ```javascript
 client.navigateCms('/some/other/page')
 ```
+
+## `client.getCmsBaseUrl()`
+
+Returns the base url of the parent CMS window.
+
+```javascript
+client.getCmsBaseUrl()
+```

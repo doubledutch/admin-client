@@ -35,6 +35,12 @@ test('client can navigate to relative url', async () => {
   expect(global._window.location).toEqual('/some/place')
 })
 
+test('client will return correct cms base url', async () => {
+  const cmsBaseUrl = client.getCmsBaseUrl()
+
+  expect(cmsBaseUrl).toEqual('https://cms.doubledutch.me')
+})
+
 test('CMS API request resolves to response', async () => {
   global._xmlHttpRequestSpy.openParams = [getConfigParams]
   global._xmlHttpRequestSpy.responseBodies = [{ some: 'config' }]
