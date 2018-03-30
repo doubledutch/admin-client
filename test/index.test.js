@@ -72,7 +72,7 @@ test('client can getUsers()', async () => {
   global._xmlHttpRequestSpy.responseBodies = [[{ Id: '1234', FirstName: 'Adam', LastName: 'Liechty', EmailAddress: 'adam@doubledutch.me' }]]
 
   const responseBody = await client.getUsers()
-  expect(responseBody).toEqual([{id: '1234', email: 'adam@doubledutch.me', firstName: 'Adam', lastName: 'Liechty', userGroupIds: [], tierId: 0}])
+  expect(responseBody).toEqual([{id: '1234', email: 'adam@doubledutch.me', firstName: 'Adam', lastName: 'Liechty', userGroupIds: [], tierId: 'default'}])
 
   expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
 })
@@ -92,7 +92,7 @@ test('client can getAttendees(query)', async () => {
   global._xmlHttpRequestSpy.responseBodies = [[{ Id: '1234', FirstName: 'Adam', LastName: 'Liechty', EmailAddress: 'adam@doubledutch.me' }]]
 
   const responseBody = await client.getAttendees('MY_QUERY')
-  expect(responseBody).toEqual([{id: '1234', email: 'adam@doubledutch.me', firstName: 'Adam', lastName: 'Liechty', userGroupIds: [], tierId: 0}])
+  expect(responseBody).toEqual([{id: '1234', email: 'adam@doubledutch.me', firstName: 'Adam', lastName: 'Liechty', userGroupIds: [], tierId: 'default'}])
 
   expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
 })
@@ -101,8 +101,8 @@ test('emulated client can getAttendees(query)', async () => {
   client.region = 'none'
   const responseBody = await client.getAttendees('pont')
   expect(responseBody).toEqual([
-    {id: '1234', email: 'cosette@thenardier.hotel', username: 'cosette@thenardier.hotel', company: 'Les Misérables', title: 'Character', firstName: 'Cosette', lastName: 'Pontmercy', tierId: 0, image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Ebcosette.jpg', userGroupIds: [68,79]},
-    {id: '5678', email: 'marius@revolution.fr', username: 'marius@revolution.fr', company: 'Les Misérables', title: 'Character', firstName: 'Marius', lastName: 'Pontmercy', tierId: 0, image: 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Marius_sees_Cosette.jpg', userGroupIds: []}
+    {id: '1234', email: 'cosette@thenardier.hotel', username: 'cosette@thenardier.hotel', company: 'Les Misérables', title: 'Character', firstName: 'Cosette', lastName: 'Pontmercy', tierId: 'default', image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Ebcosette.jpg', userGroupIds: [68,79]},
+    {id: '5678', email: 'marius@revolution.fr', username: 'marius@revolution.fr', company: 'Les Misérables', title: 'Character', firstName: 'Marius', lastName: 'Pontmercy', tierId: 'default', image: 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Marius_sees_Cosette.jpg', userGroupIds: []}
   ])
 })
 
@@ -129,7 +129,7 @@ test('client can getTiers()', async () => {
 
   const responseBody = await client.getTiers()
   expect(responseBody).toEqual([
-    {id: 0, name: 'Default', attendeeCount: 42, lists: [{id: 456, name: 'Agenda', itemCount: 400}]},
+    {id: 'default', name: 'Default', attendeeCount: 42, lists: [{id: 456, name: 'Agenda', itemCount: 400}]},
     {id: 123, name: 'VIP', attendeeCount: 5, lists: [{id: 456, name: 'Agenda', itemCount: 3}]}
   ])
 
