@@ -28,7 +28,7 @@ export function prettifyAttendee(user) {
     username: user.UserName,
     image: user.ImageUrl,
     userGroupIds: user.UserGroups || [],
-    tierId: user.Tier || 0,
+    tierId: user.Tier || 'default',
     twitter: user.TwitterUserName,
     linkedin: user.LinkedInId,
     facebook: user.FacebookUserId
@@ -57,7 +57,7 @@ export function prettifySurvey(s) {
 export function prettifyTier(tier) {
   if (!tier) return null
   return {
-    id: tier.Id,
+    id: tier.Id || 'default',
     name: tier.Name,
     attendeeCount: tier.AttendeeCount,
     lists: tier.ListItems.map(x => ({itemCount: x.ItemCount, name: x.TopicName, id: x.TopicId}))
