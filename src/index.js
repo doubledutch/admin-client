@@ -35,6 +35,8 @@ const client = {
       }
     })
   },
+  // currentUser is only specified to make `client` similar to the one exposed
+  // by `rn-client`, so that connecting with `firebase-connector` works.
   currentUser: { id: 'none' }
 }
 const apiFunctions = api(client)
