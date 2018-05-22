@@ -4,3 +4,4 @@ test
 .babelrc
 .gitignore
 yarn.lock
+yarn-error.log

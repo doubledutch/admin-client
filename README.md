@@ -83,6 +83,29 @@ Returns a Promise which resolves to all the attendee groups in the current event
 client.getAttendeeGroups().then(groups => console.log(groups))
 ```
 
+## `client.getCurrentEvent()`
+
+Returns a Promise which resolves to information about the current event
+
+```javascript
+client.getCurrentEvent().then(evt => console.log(evt))
+```
+
+```json
+{
+  "name": "SKO",
+  "description": "Sales Kickoff",
+  "primaryColor": "#2a82b5",
+  "id": "sample-event-id",
+  "timeZone": {
+    "id": "America/Los_Angeles",
+    "displayName": "(UTC-08:00) Pacific Time (US & Canada)" },
+  "startDate": "2018-04-26T00:00:00",
+  "endDate": "2018-04-27T00:00:00",
+  "registrationType": "closed",
+}
+```
+
 ## `client.getTiers()`
 
 Returns a Promise which resolves to all the attendee groups in the current event,

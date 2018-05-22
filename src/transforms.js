@@ -43,6 +43,20 @@ export function prettifyAttendeeGroup(group) {
   }
 }
 
+export function prettifyEvent(e) {
+  if (!e) return null
+  return {
+    name: e.name,
+    description: e.description,
+    primaryColor: e.primaryColor,
+    id: e.applicationId,
+    timeZone: e.timeZone,
+    startDate: e.startDate,
+    endDate: e.endDate,
+    registrationType: e.registrationType,
+  }
+}
+
 export function prettifySurvey(s) {
   if (!s) return null
   return deleteUndefinedKeys({

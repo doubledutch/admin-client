@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { prettifyAttendee, prettifyAttendeeGroup, prettifySurvey, prettifyTier } from './transforms'
+import { prettifyAttendee, prettifyAttendeeGroup, prettifyEvent, prettifySurvey, prettifyTier } from './transforms'
 
 export default function api(client) {
   function isEmulated() { return client.region === 'none' }
@@ -44,6 +44,10 @@ export default function api(client) {
     getTiers() {
       return isEmulated() ? emulatedApi.getTiers()
         : client.cmsRequest('GET', '/api/tiers').then(val => val.map(prettifyTier))
+    },
+    getCurrentEvent() {
+      return isEmulated() ? emulatedApi.getCurrentEvent()
+        : client.cmsRequest('GET', '/onboarding/events/{currentEventId}').then(prettifyEvent)
     },
 
     // Deprecated aliases for getAttendee(s)
@@ -75,7 +79,10 @@ export const emulatedApi = {
     return Promise.resolve(query
       ? attendees.filter(a => !!Object.values(a).find(v => (typeof v === 'string') && v.toLowerCase().includes(query.toLowerCase())))
       : attendees)
-  }
+  },
+  getCurrentEvent() {
+    return Promise.resolve(emulatedEvent)
+  },
 }
 
 const emulatedAttendeeGroups = [
@@ -129,4 +136,15 @@ const emulatedAttendees = {
     Title: 'Character',
     Company: 'Les Misérables'
   }
+}
+
+const emulatedEvent = {
+  name: 'SKO',
+  description: 'Sales Kickoff',
+  primaryColor: '#2a82b5',
+  applicationId: 'sample-event-id',
+  timeZone: { id: 'America/Los_Angeles', displayName: '(UTC-08:00) Pacific Time (US & Canada)' },
+  startDate: '2018-04-26T00:00:00',
+  endDate: '2018-04-27T00:00:00',
+  registrationType: 'closed',
 }
