@@ -81,7 +81,7 @@ export const emulatedApi = {
       : attendees)
   },
   getCurrentEvent() {
-    return Promise.resolve(emulatedEvent)
+    return Promise.resolve(prettifyEvent(emulatedEvent))
   },
 }
 
@@ -139,12 +139,10 @@ const emulatedAttendees = {
 }
 
 const emulatedEvent = {
-  name: 'SKO',
-  description: 'Sales Kickoff',
-  primaryColor: '#2a82b5',
-  applicationId: 'sample-event-id',
-  timeZone: { id: 'America/Los_Angeles', displayName: '(UTC-08:00) Pacific Time (US & Canada)' },
-  startDate: '2018-04-26T00:00:00',
-  endDate: '2018-04-27T00:00:00',
-  registrationType: 'closed',
+  Name: 'SKO',
+  ApplicationId: 'sample-event-id',
+  TimeZone: 'America/Los_Angeles',
+  StartDate: '2018-04-26T00:00:00',
+  EndDate: '2018-04-27T00:00:00',
+  CanRegister: false,
 }
