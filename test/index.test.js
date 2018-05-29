@@ -150,28 +150,24 @@ test('client can getAttendeeGroups()', async () => {
 })
 
 test('client can getCurrentEvent()', async () => {
-  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/onboarding/events/EVENT_ID?currentApplicationId=EVENT_ID'}]
+  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/applications/byid/EVENT_ID?currentApplicationId=EVENT_ID'}]
   global._xmlHttpRequestSpy.responseBodies = [{
-    name: 'SKO',
-    description: 'Sales Kickoff',
-    primaryColor: '#2a82b5',
-    applicationId: 'sample-event-id',
-    timeZone: { id: 'America/Los_Angeles', displayName: '(UTC-08:00) Pacific Time (US & Canada)' },
-    startDate: '2018-04-26T00:00:00',
-    endDate: '2018-04-27T00:00:00',
-    registrationType: 'closed',
+    Name: 'SKO',
+    ApplicationId: 'sample-event-id',
+    TimeZone: 'America/Los_Angeles',
+    StartDate: '2018-04-26T00:00:00',
+    EndDate: '2018-04-27T00:00:00',
+    CanRegister: false,
   }]
 
   const responseBody = await client.getCurrentEvent()
   expect(responseBody).toEqual({
     name: 'SKO',
-    description: 'Sales Kickoff',
-    primaryColor: '#2a82b5',
     id: 'sample-event-id',
-    timeZone: { id: 'America/Los_Angeles', displayName: '(UTC-08:00) Pacific Time (US & Canada)' },
+    timeZone: 'America/Los_Angeles',
     startDate: '2018-04-26T00:00:00',
     endDate: '2018-04-27T00:00:00',
-    registrationType: 'closed',  
+    canRegister: false,  
   })
 
   expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)  

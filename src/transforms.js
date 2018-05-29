@@ -46,14 +46,12 @@ export function prettifyAttendeeGroup(group) {
 export function prettifyEvent(e) {
   if (!e) return null
   return {
-    name: e.name,
-    description: e.description,
-    primaryColor: e.primaryColor,
-    id: e.applicationId,
-    timeZone: e.timeZone,
-    startDate: e.startDate,
-    endDate: e.endDate,
-    registrationType: e.registrationType,
+    name: e.Name,
+    id: e.ApplicationId,
+    timeZone: e.TimeZone,
+    startDate: e.StartDate,
+    endDate: e.EndDate,
+    canRegister: e.CanRegister,
   }
 }
 

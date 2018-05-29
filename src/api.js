@@ -47,7 +47,7 @@ export default function api(client) {
     },
     getCurrentEvent() {
       return isEmulated() ? emulatedApi.getCurrentEvent()
-        : client.cmsRequest('GET', '/onboarding/events/{currentEventId}').then(prettifyEvent)
+        : client.cmsRequest('GET', '/api/applications/byid/{currentEventId}').then(prettifyEvent)
     },
 
     // Deprecated aliases for getAttendee(s)

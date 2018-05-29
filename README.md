@@ -94,15 +94,11 @@ client.getCurrentEvent().then(evt => console.log(evt))
 ```json
 {
   "name": "SKO",
-  "description": "Sales Kickoff",
-  "primaryColor": "#2a82b5",
   "id": "sample-event-id",
-  "timeZone": {
-    "id": "America/Los_Angeles",
-    "displayName": "(UTC-08:00) Pacific Time (US & Canada)" },
+  "timeZone": "America/Los_Angeles",
   "startDate": "2018-04-26T00:00:00",
   "endDate": "2018-04-27T00:00:00",
-  "registrationType": "closed",
+  "canRegister": false,
 }
 ```
 
