@@ -68,7 +68,7 @@ function postMessage(type, data) {
   if (win && win.parent && win.parent.postMessage) {
     win.parent.postMessage({
       type,
-      payload: { ...(data||{}), src: win.document.location.toString() }
+      payload: Object.assign({}, (data||{}), {src: win.document.location.toString()})
     }, '*')
   }
 }
