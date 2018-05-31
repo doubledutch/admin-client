@@ -68,7 +68,7 @@ function postMessage(type, data) {
   if (win && win.parent && win.parent.postMessage) {
     win.parent.postMessage({
       type,
-      payload: { src: win.document.location.toString(), data: data }
+      payload: { ...(data||{}), src: win.document.location.toString() }
     }, '*')
   }
 }
@@ -141,6 +141,10 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
   })
 }
 
-function navigateCms(relativeUrl) {
-  postMessage('navigate_cms', { destinationPath : relativeUrl });
+function navigateCms(location) {
+  if (location && (location.url || location.hash)) {
+    postMessage('navigate', location);    
+  } else {
+    postMessage('navigate', { url : location });
+  }
 }
