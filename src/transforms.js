@@ -25,6 +25,7 @@ export function prettifyAttendee(user) {
     title: user.Title,
     company: user.Company,
     email: user.EmailAddress,
+    phone: user.Phone,
     username: user.UserName,
     image: user.ImageUrl,
     userGroupIds: user.UserGroups || [],
