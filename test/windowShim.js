@@ -23,8 +23,8 @@ global._window = {
     postMessage({type, payload}, origin) {
       expect(origin).toEqual('*')
       switch (type) {
-        case 'navigate_cms':
-          global._window.location = payload.data.destinationPath
+        case 'navigate':
+          global._window.location = payload.url
           break
         case 'access_token_unauthorized':
           messageListener({data: {type: 'access_token', payload: { accessToken: 'FAKE_TOKEN_2' } } })
