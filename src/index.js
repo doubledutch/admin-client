@@ -117,7 +117,7 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
           return
         }
         if (this.status >= 200 && this.status < 400) {
-          if (!this.response) resolve()
+          if (!this.response) return resolve()
           let data
           try {
             data = JSON.parse(this.response)
