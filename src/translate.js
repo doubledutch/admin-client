@@ -65,7 +65,7 @@ function replace(template, params = {}) {
   return template.replace(replaceRegex, (match, key, offset, string) => {
     const val = params[key]
     if (val === undefined) console.warn(`Param '${key}' not supplied for i18n for string: ${string}`)
-    return val || ''
+    return val == null ? '' : val
   })
 }
 

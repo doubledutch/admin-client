@@ -18,7 +18,8 @@ import {translate as t, setLocales, useStrings} from '../src'
 
 const strings = {
   "": {
-    "greet": "Hello, ${name}"
+    "greet": "Hello, ${name}",
+    "age": "${years} years old"
   },
   "de": {
     "greet": "Hallo, ${name}"
@@ -32,6 +33,12 @@ test('translation uses specific language-region, if available', () => {
   setLocales([{language: 'de', region: 'DE'}])
   useStrings(strings)
   expect(t('greet', {name: 'Adam'})).toEqual('Guten Tag, Adam')
+})
+
+test('numberic variables are replaced', () => {
+  useStrings(strings)
+  expect(t('age', {years: 0})).toEqual('0 years old')
+  expect(t('age', {years: 2})).toEqual('2 years old')
 })
 
 test('translation uses language, if specific region unavailable', () => {
