@@ -15,6 +15,8 @@
  */
 
 import api from './api'
+export { locales } from './locales'
+export { default as translate, setLocales, useStrings } from './translate'
 
 const win = (global && global._window) || window
 const xmlHttpRequest = (global && global._xmlHttpRequest) || XMLHttpRequest
