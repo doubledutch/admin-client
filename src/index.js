@@ -64,7 +64,7 @@ if (win) {
       if (e.data.type === 'access_token') {
         accessToken = e.data.payload.accessToken
       } else if (e.data.type === 'application_id') {
-        client.setCurrentEvent({ id: e.data.payload.applicationId })
+        currentEvent = { id: e.data.payload.applicationId }
       } else if (e.data.type === 'cms_root') {
         cmsRoot = e.data.payload.url
         client.region = getRegion(cmsRoot)
@@ -75,6 +75,7 @@ if (win) {
       accessTokenResolves = []
       cmsRequests.forEach(r => r())
       cmsRequests = []  
+      client.setCurrentEvent(currentEvent)
     }
   }, false)
 }
