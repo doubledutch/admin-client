@@ -45,14 +45,10 @@ export default function api(client) {
       return isEmulated() ? emulatedApi.getTiers()
         : client.cmsRequest('GET', '/api/tiers').then(val => val.map(prettifyTier))
     },
-    getCurrentEvent() {
-      return isEmulated() ? emulatedApi.getCurrentEvent()
+    getCurrentEventInfo() {
+      return isEmulated() ? emulatedApi.getCurrentEventInfo()
         : client.cmsRequest('GET', '/api/applications/byid/{currentEventId}').then(prettifyEvent)
     },
-
-    // Deprecated aliases for getAttendee(s)
-    getUser: id => apis.getAttendee(id),
-    getUsers: () => apis.getAttendees()
   }
 
   return apis
@@ -80,7 +76,7 @@ export const emulatedApi = {
       ? attendees.filter(a => !!Object.values(a).find(v => (typeof v === 'string') && v.toLowerCase().includes(query.toLowerCase())))
       : attendees)
   },
-  getCurrentEvent() {
+  getCurrentEventInfo() {
     return Promise.resolve(prettifyEvent(emulatedEvent))
   },
 }

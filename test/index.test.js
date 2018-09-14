@@ -67,16 +67,6 @@ test('token is refreshed when CMS API returns 401, and CMS API call is retried',
   expect(global._xmlHttpRequestSpy.responseBodies).toHaveLength(0)
 })
 
-test('client can getUsers()', async () => {
-  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/users?currentApplicationId=EVENT_ID'}]
-  global._xmlHttpRequestSpy.responseBodies = [[{ Id: '1234', FirstName: 'Adam', LastName: 'Liechty', EmailAddress: 'adam@doubledutch.me' }]]
-
-  const responseBody = await client.getUsers()
-  expect(responseBody).toEqual([{id: '1234', email: 'adam@doubledutch.me', firstName: 'Adam', lastName: 'Liechty', userGroupIds: [], tierId: 'default'}])
-
-  expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
-})
-
 test('client can getAttendees()', async () => {
   global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/users?currentApplicationId=EVENT_ID'}]
   global._xmlHttpRequestSpy.responseBodies = [[{ Id: '1234', FirstName: 'Adam', LastName: 'Liechty', EmailAddress: 'adam@doubledutch.me', Tier: 42 }]]
@@ -149,7 +139,7 @@ test('client can getAttendeeGroups()', async () => {
   expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
 })
 
-test('client can getCurrentEvent()', async () => {
+test('client can getCurrentEventInfo()', async () => {
   global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/applications/byid/EVENT_ID?currentApplicationId=EVENT_ID'}]
   global._xmlHttpRequestSpy.responseBodies = [{
     Name: 'SKO',
@@ -160,7 +150,7 @@ test('client can getCurrentEvent()', async () => {
     CanRegister: false,
   }]
 
-  const responseBody = await client.getCurrentEvent()
+  const responseBody = await client.getCurrentEventInfo()
   expect(responseBody).toEqual({
     name: 'SKO',
     id: 'sample-event-id',
@@ -171,4 +161,11 @@ test('client can getCurrentEvent()', async () => {
   })
 
   expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)  
+})
+
+test('client can getCurrentEvent()', async () => {
+  const currentEvent = await client.getCurrentEvent()
+  expect(currentEvent).toEqual({
+    id: 'EVENT_ID',
+  })
 })

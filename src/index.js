@@ -21,9 +21,13 @@ export { default as translate, setLocales, useStrings } from './translate'
 const win = (global && global._window) || window
 const xmlHttpRequest = (global && global._xmlHttpRequest) || XMLHttpRequest
 
-let accessToken, cmsRoot
+let accessToken, cmsRoot, currentEvent
 let accessTokenResolves = []
 let cmsRequests = []
+let resolveCurrentEvent
+const currentEventPromise = new Promise((resolve, reject) => {
+  resolveCurrentEvent = resolve
+})
 const client = {
   cmsRequest,
   navigateCms,
@@ -37,9 +41,18 @@ const client = {
       }
     })
   },
-  // currentUser is only specified to make `client` similar to the one exposed
+  // getCurrentUser is only specified to make `client` similar to the one exposed
   // by `rn-client`, so that connecting with `firebase-connector` works.
-  currentUser: { id: 'none' }
+  getCurrentUser() {
+    return Promise.resolve({ id: 'none' })
+  },
+  getCurrentEvent() {
+    return currentEventPromise
+  },
+  setCurrentEvent(evt) {
+    currentEvent = evt
+    resolveCurrentEvent(evt)
+  },
 }
 const apiFunctions = api(client)
 Object.keys(apiFunctions).forEach(fnName => client[fnName] = apiFunctions[fnName])
@@ -51,17 +64,17 @@ if (win) {
       if (e.data.type === 'access_token') {
         accessToken = e.data.payload.accessToken
       } else if (e.data.type === 'application_id') {
-        client.currentEvent = { id: e.data.payload.applicationId }
+        client.setCurrentEvent({ id: e.data.payload.applicationId })
       } else if (e.data.type === 'cms_root') {
         cmsRoot = e.data.payload.url
         client.region = getRegion(cmsRoot)
       }
     }
-    if (accessToken && client.currentEvent && cmsRoot) {
+    if (accessToken && currentEvent && cmsRoot) {
       accessTokenResolves.forEach(resolve => resolve(accessToken))
       accessTokenResolves = []
       cmsRequests.forEach(r => r())
-      cmsRequests = []
+      cmsRequests = []  
     }
   }, false)
 }
@@ -91,7 +104,7 @@ function getCmsBaseUrl() {
 
 function cmsRequest(method, relativeUrl, bodyJSON) {
   return new Promise((resolve, reject) => {
-    if (accessToken && client.currentEvent && cmsRoot) {
+    if (accessToken && currentEvent && cmsRoot) {
       doRequest()
     } else {
       cmsRequests.push(doRequest)
@@ -99,7 +112,7 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
 
     // A simple usage of XMLHttpRequest provides browser compatibility and small footprint.
     function doRequest() {
-      const resolvedRelativeUrl = relativeUrl.replace('{currentEventId}', client.currentEvent.id)
+      const resolvedRelativeUrl = relativeUrl.replace('{currentEventId}', currentEvent.id)
 
       if (client.region === 'none') {
         console.log(`Skipping HTTP request to actual CMS. ${method} ${resolvedRelativeUrl}`)
@@ -107,7 +120,7 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
         return
       }
 
-      const url = `${cmsRoot}${resolvedRelativeUrl}${resolvedRelativeUrl.indexOf('?') >= 0 ? '&':'?'}currentApplicationId=${client.currentEvent.id}`
+      const url = `${cmsRoot}${resolvedRelativeUrl}${resolvedRelativeUrl.indexOf('?') >= 0 ? '&':'?'}currentApplicationId=${currentEvent.id}`
       const request = new xmlHttpRequest()
       request.open(method, url, true)
       request.setRequestHeader('Authorization', `Bearer ${accessToken}`)

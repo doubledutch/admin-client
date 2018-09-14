@@ -15,15 +15,21 @@ for an easy backend for your DoubleDutch extension.
 ```jsx
 import client from '@doubledutch/admin-client'
 
-console.log(client.currentUser)
-
 client.getToken().then(token => console.log(`${token} is a valid DoubleDutch CMS access token, usually used indirectly by other client libraries.`))
 
 class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+    client.getCurrentUser()
+      .then(currentUser => this.setState({currentUser}))
+  }
+
   render() {
+    const {currentUser} = this.state
     return (
       <div>
-        <div>Hello {client.currentUser.firstName}</div>
+        {currentUser && <div>Hello {currentUser.firstName}</div>}
       </div>
     )
   }
@@ -32,9 +38,9 @@ class App extends React.Component {
 
 # Documentation
 
-## `client.currentUser`
+## `client.getCurrentUser()`
 
-Provides information about the current attendee.
+Returns a Promise that resolves to information about the current attendee.
 
 ```javascript
 {
@@ -48,7 +54,7 @@ Provides information about the current attendee.
 }
 ```
 
-## `client.getToken`
+## `client.getToken()`
 
 Returns a Promise which resolves to a valid CMS access token.  Normally used
 indirectly by other client libraries to access the DoubleDutch platform.
@@ -83,12 +89,12 @@ Returns a Promise which resolves to all the attendee groups in the current event
 client.getAttendeeGroups().then(groups => console.log(groups))
 ```
 
-## `client.getCurrentEvent()`
+## `client.getCurrentEventInfo()`
 
 Returns a Promise which resolves to information about the current event
 
 ```javascript
-client.getCurrentEvent().then(evt => console.log(evt))
+client.getCurrentEventInfo().then(evt => console.log(evt))
 ```
 
 ```json

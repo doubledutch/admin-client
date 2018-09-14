@@ -56,7 +56,7 @@ test('translation falls back to default, if specific language and language-regio
 test('translation returns empty string for nonexistent keys', () => {
   setLocales(["de-DE"])
   useStrings(strings)
-  expect(t('not_found', {name: 'Adam'})).toEqual('')
+  expect(t('not_found__warning_expected', {name: 'Adam'})).toEqual('')
 })
 
 test('translation respects ordered locale preference, where region-specific is higher than language', () => {
