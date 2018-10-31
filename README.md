@@ -38,22 +38,6 @@ class App extends React.Component {
 
 # Documentation
 
-## `client.getCurrentUser()`
-
-Returns a Promise that resolves to information about the current attendee.
-
-```javascript
-{
-  id: '24601',                            // DoubleDutch user ID (required)
-  image: 'https://ddut.ch/image.jpg',     // Avatar image URL (optional)
-  identifier: 'jean@valjean.com',         // Unique ID provided by event organizer (required)
-  firstName: 'Jean',                      // Given name (required)
-  lastName: 'Valjean',                    // Surname (required)
-  title: 'Character',                     // Job title (optional)
-  company: 'Les Misérables'               // Company attendee works for (optional)
-}
-```
-
 ## `client.getToken()`
 
 Returns a Promise which resolves to a valid CMS access token.  Normally used
