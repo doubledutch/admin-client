@@ -141,6 +141,8 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
             throw new Error(`Could not parse JSON: ${this.response}`)
           }
           resolve(data)
+        } else {
+          reject({ status: this.status })
         }
       }
       request.onerror = function() {
