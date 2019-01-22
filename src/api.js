@@ -67,7 +67,7 @@ export const emulatedApi = {
   getAttendee(id) {
     id = id == null ? null : id.toString()
     if (emulatedAttendees[id]) return Promise.resolve(emulatedAttendees[id]).then(prettifyAttendee)
-    return Promise.reject('Not Found')
+    return Promise.reject({ status: 404 })
   },
   getAttendees(query) {
     // Crude filter for emulator
