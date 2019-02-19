@@ -91,8 +91,8 @@ test('emulated client can getAttendees(query)', async () => {
   client.region = 'none'
   const responseBody = await client.getAttendees('pont')
   expect(responseBody).toEqual([
-    {id: '1234', email: 'cosette@thenardier.hotel', username: 'cosette@thenardier.hotel', company: 'Les Misérables', title: 'Character', firstName: 'Cosette', lastName: 'Pontmercy', tierId: 'default', image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Ebcosette.jpg', userGroupIds: [68,79]},
-    {id: '5678', email: 'marius@revolution.fr', username: 'marius@revolution.fr', company: 'Les Misérables', title: 'Character', firstName: 'Marius', lastName: 'Pontmercy', tierId: 'default', image: 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Marius_sees_Cosette.jpg', userGroupIds: []}
+    {id: '1234', email: 'cosette@thenardier.hotel', username: 'cosette@thenardier.hotel', company: 'Les Misérables', title: 'Character', firstName: 'Cosette', lastName: 'Pontmercy', tierId: 'default', identifier: 'cosette1862', image: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Ebcosette.jpg', userGroupIds: [68,79]},
+    {id: '5678', email: 'marius@revolution.fr', username: 'marius@revolution.fr', company: 'Les Misérables', title: 'Character', firstName: 'Marius', lastName: 'Pontmercy', tierId: 'default', identifier: 'marius1862', image: 'https://upload.wikimedia.org/wikipedia/commons/b/b6/Marius_sees_Cosette.jpg', userGroupIds: []}
   ])
 })
 
