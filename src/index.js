@@ -95,7 +95,7 @@ function getRegion(cmsRoot) {
   if (cmsRoot.indexOf("https://cms.eu.doubledutch.me") === 0) return 'eu'
   if (cmsRoot.indexOf("https://purple.cms.doubledutch.me") === 0) return 'purple'
   if (cmsRoot.indexOf("https://qa.cms.doubledutch.me") === 0) return 'qa'
-  if (cmsRoot.indexOf("http://cms.local:") === 0 || cmsRoot.indexOf("http://localhost:") === 0) return 'local'
+  if (cmsRoot.match(/^https?:\/\/cms\.local\:/) || cmsRoot.match(/^https?:\/\/localhost\:/)) return 'local'
   return 'none'
 }
 
