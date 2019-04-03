@@ -15,7 +15,7 @@
  */
 
 import windowShim from './windowShim'
-import client from '../src/index'
+import client, { getRegion } from '../src/index'
 
 beforeEach(() => {
   global._xmlHttpRequestSpy = {}
@@ -39,6 +39,20 @@ test('client will return correct cms base url', async () => {
   const cmsBaseUrl = client.getCmsBaseUrl()
 
   expect(cmsBaseUrl).toEqual('https://cms.doubledutch.me')
+})
+
+test('region is `local` with localhost CMS root variants', () => {
+  expect(getRegion('http://localhost:8080/')).toEqual('local')
+  expect(getRegion('https://localhost:8080/')).toEqual('local')
+  expect(getRegion('http://cms.local:8080/')).toEqual('local')
+  expect(getRegion('https://cms.local:8080/')).toEqual('local')
+})
+
+test('region is `none` with unknown CMS roots', () => {
+  expect(getRegion('http://localhostx:8080/')).toEqual('none')
+  expect(getRegion('https://localhostx:8080/')).toEqual('none')
+  expect(getRegion('http://cms.localx:8080/')).toEqual('none')
+  expect(getRegion('https://cms.localx:8080/')).toEqual('none')
 })
 
 test('CMS API request resolves to response', async () => {
