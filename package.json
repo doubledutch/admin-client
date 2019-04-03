@@ -4,7 +4,7 @@
   "description": "A client library for interacting with the DoubleDutch CMS",
   "main": "lib/index.js",
   "scripts": {
-    "compile": "rimraf lib/* && babel src -d lib",
+    "compile": "rimraf lib/* && babel src --out-dir lib",
     "prepare": "npm run compile",
     "test": "jest"
   },
@@ -13,7 +13,6 @@
   },
   "keywords": [
     "doubledutch",
-    "bazaar",
     "admin",
     "client"
   ],
@@ -25,16 +24,17 @@
   "contributors": [
     "Adam Liechty <adam@doubledutch.me>"
   ],
-  "license": "apache-2.0",
+  "license": "Apache-2.0",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.1",
-    "jest": "^21.2.1",
-    "rimraf": "^2.6.2"
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-transform-runtime": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "jest": "^24.7.0",
+    "rimraf": "^2.6.3"
   },
   "dependencies": {
-    "babel-runtime": "^6.26.0"
+    "@babel/polyfill": "^7.4.3",
+    "@babel/runtime": "^7.4.3"
   }
 }
