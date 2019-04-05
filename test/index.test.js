@@ -92,10 +92,10 @@ test('client can getAttendees()', async () => {
 })
 
 test('client can getAttendees(query)', async () => {
-  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/users?q=MY_QUERY&page=0&top=200&currentApplicationId=EVENT_ID'}]
+  global._xmlHttpRequestSpy.openParams = [{method: 'GET', url: 'https://cms.doubledutch.me/api/users?q=MY%20%3FQuestionable%3F%20QUERY&page=0&top=200&currentApplicationId=EVENT_ID'}]
   global._xmlHttpRequestSpy.responseBodies = [[{ Id: '1234', FirstName: 'Adam', LastName: 'Liechty', EmailAddress: 'adam@doubledutch.me' }]]
 
-  const responseBody = await client.getAttendees('MY_QUERY')
+  const responseBody = await client.getAttendees('MY ?Questionable? QUERY')
   expect(responseBody).toEqual([{id: '1234', email: 'adam@doubledutch.me', firstName: 'Adam', lastName: 'Liechty', userGroupIds: [], tierId: 'default'}])
 
   expect(global._xmlHttpRequestSpy.openParams).toHaveLength(0)
