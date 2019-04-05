@@ -125,6 +125,7 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
       const request = new xmlHttpRequest()
       request.open(method, url, true)
       request.setRequestHeader('Authorization', `Bearer ${accessToken}`)
+      request.setRequestHeader('Content-Type', 'application/json')
       request.onload = function() {
         if (this.status == 401) {
           accessToken = null
@@ -150,7 +151,6 @@ function cmsRequest(method, relativeUrl, bodyJSON) {
       }
       if (bodyJSON) {
         const body = JSON.stringify(bodyJSON)
-        request.setRequestHeader('Content-Type', 'application/json')
         request.send(body)
       } else {
         request.send()
