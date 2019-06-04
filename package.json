@@ -1,6 +1,6 @@
 {
   "name": "@doubledutch/admin-client",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "A client library for interacting with the DoubleDutch CMS",
   "main": "lib/index.js",
   "scripts": {
@@ -26,15 +26,15 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/plugin-transform-runtime": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "jest": "^24.7.0",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "jest": "^24.8.0",
     "rimraf": "^2.6.3"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.3",
-    "@babel/runtime": "^7.4.3"
+    "@babel/polyfill": "^7.4.4",
+    "@babel/runtime": "^7.4.5"
   }
 }
