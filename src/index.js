@@ -94,6 +94,7 @@ export function getRegion(cmsRoot) {
   if (cmsRoot.indexOf("https://cms.doubledutch.me") === 0) return 'us'
   if (cmsRoot.indexOf("https://cms.eu.doubledutch.me") === 0) return 'eu'
   if (cmsRoot.indexOf("https://purple.cms.doubledutch.me") === 0) return 'purple'
+  if (cmsRoot.indexOf("https://cms.dev.doubledutch.net") === 0) return 'purple'
   if (cmsRoot.indexOf("https://qa.cms.doubledutch.me") === 0) return 'qa'
   if (/^https?:\/\/(cms\.local|localhost):/.test(cmsRoot)) return 'local'
   return 'none'
